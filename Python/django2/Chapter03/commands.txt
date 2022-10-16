@@ -1,0 +1,6 @@
+conda init bash
+https://stackoverflow.com/questions/55507519/python-activate-conda-env-through-shell-script
+
+
+psql -U postgres
+https://stackoverflow.com/questions/55038942/fatal-password-authentication-failed-for-user-postgres-postgresql-11-with-pg/55039419
