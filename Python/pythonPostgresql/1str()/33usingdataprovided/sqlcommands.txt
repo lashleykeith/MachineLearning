@@ -1,0 +1,459 @@
+Select Commands
+SELECT customers.first_name AS "NOMBRES PRIMEROS" , customers.last_name FROM customers;
+
+Where Commands
+SELECT customers.first_name , customers.last_name FROM customers WHERE customers.first_name = 'Rolf';
+
+SELECT customers.first_name , customers.last_name FROM customers WHERE customers.first_name = 'Rolf' OR customers.last_name = 'Watson';
+
+SELECT customers.first_name , customers.last_name FROM customers WHERE customers.first_name = 'Rolf' AND customers.last_name = 'Watson';
+
+
+LIMIT
+SELECT customers.first_name, customers.last_name FROM customers LIMIT 1;
+
+DELETE
+DELETE FROM items WHERE id=4;//doesn't work because the item is used elsewhere.
+DELETE FROM purchases WHERE item_id=4; // deleting the row where it is at so you can delete it.
+SELECT * FROM items;
+DELETE FROM items WHERE id=4;
+
+Wildcards
+SELECT * FROM customers;
+SELECT * FROM customers WHERE last_name LIKE '%';//gives you everything.
+SELECT * FROM customers WHERE last_name LIKE '____';//you for the place names.
+SELECT * FROM customers WHERE last_name LIKE '%t%';//all the characters that have t.
+SELECT * FROM customers WHERE last_name LIKE '%t_';// characters with one t.
+
+JOIN
+SELECT * FROM Customers INNER JOIN Orders ON Customers.ID = Orders.Customer_ID //Joins Customers id table to the orders.
+
+SELECT * FROM Customers LEFT JOIN Orders ON Customers.ID = Orders.Customer_ID // Wil include all of the table on the left even if it doesn't correspond to what is one the right. IF they don't match the data for the table on the right is blank.
+
+
+SELECT * FROM Customers RIGHT JOIN Orders ON Customers.ID = Orders.Customer_ID // Wil include all of the table on the right even if it doesn't correspond to what is one the left. IF they don't match the data for the table on the left is blank.
+SELECT * FROM Customers FULL JOIN Orders ON Customers.ID = Orders.Customer_ID
+
+JOIN EXAMPLES
+SELECT * FROM items INNER JOIN purchases ON items.id = purchases.item_id;//items linked up with the purchases.
+
+SELECT * FROM customers INNER JOIN purchases ON customers.id = purchases.customer_id; 
+
+SELECT customer.first_name, customers.last_name FROM customers INNER JOIN purchases ON customers.id = purchases.customer_id;
+
+SELECT * FROM  items 
+INNER JOIN purchases ON items.id = purchases.item_id
+INNER JOIN customers ON purchases.customers.id;
+
+
+SELECT customers.first_name, customers.last_name, items.price FROM items
+INNER JOIN purchases ON items.id = purchases.item_id
+INNER JOIN customers ON purchases.customer_id = customers.id;
+
+SQL: GROUP BY for aggregation of data
+SELECT * FROM customers LEFT JOIN purchases ON customers.id = purchases.customer_id;
+SELECT customers.first_name, customers.last_name, purchases.id FROM customers LEFT JOIN purchases ON customers.id = purchases.customer_id;
+SELECT customers.first_name, customers.last_name, COUNT(purchases.id) FROM customers LEFT JOIN purchases ON customers.id = purchases.customer_id GROUP BY customers.id;
+1.
+SELECT * FROM customers GROUP BY customers.id;
+SELECT * FROM items 
+INNER JOIN purchases ON items.id = purchases.item_id
+INNER JOIN customers on purchases.customer_id = customers.id;
+2.
+SELECT customers.first_namecustomers.last_name, SUM(items.price) FROM items 
+INNER JOIN purchases ON items.id = purchases.item_id
+INNER JOIN customers on purchases.customer_id = customers.id
+GROUP BY customers.id;
+
+SQL: ORDER By for selecting data
+SELECT * FROM purchases;
+SELECT * FROM purchases INNER JOIN items on purchases.item_id = items.id;
+SELECT SUM(items.price) FROM purchases INNER JOIN items on purchases.item_id = items.id;
+SELECT * FROM items;
+SELECT * FROM item INNER JOIN purchases ON purchases.item_id = items.id;
+SELECT customer.first_name, customer.last_name, SUM(items.price) AS "total_spent" FROM items
+INNER JOIN purchases ON purchases.item_id = items.id
+INNER JOIN customers ON purchases.customers_id = items.id
+GROUP BY customers.id
+ORDER BY total_spent ASC
+
+SELECT customer.first_name, customer.last_name, SUM(items.price) AS "total_spent" FROM items
+INNER JOIN purchases ON purchases.item_id = items.id
+INNER JOIN customers ON purchases.customers_id = items.id
+GROUP BY customers.id
+ORDER BY total_spent ASC
+LIMIT 2;
+
+CREATE TABLE
+
+CREATE TABLE public.users(
+id integer PRIMARY KEY
+name character varying(100) NOT NULL
+)
+
+or
+CREATE TABLE public.users(
+id integer,
+name character varying(100) NOT NULL,
+CONSTRAINT users_id_pkey PRIMARY KEY (id,name)
+)
+
+SELECT * FROM public.users;
+CREATE TABLE public.videos(
+id integer PRIMARY KEY,
+user_id integer, 
+name character varying(255) NOT NULL,
+)
+
+SELECT * FROM public.users;
+CREATE TABLE public.videos(
+id integer PRIMARY KEY,
+user_id integer REFERENCES public.users, 
+name character varying(255) NOT NULL,
+)
+
+
+SQL: INSERT INTO for adding data to a table
+
+INSERT INTO public.users(id, name)
+VALUES (1, 'marysmith);
+SELECT * FROM public.users;
+VALUES (2, 'rolfsmith');
+SELECT * FROM public.users;
+INSERT INTO public.users(id, name)
+ (3, 'joseph');
+
+
+
+SQL: SEQUENCE for auto-incrementing fields
+
+SELECT * FROM public.users;
+CREATE SEQUENCE users_id_seq;
+CREATE SEQUENCE users_id_seq START 3;
+ALTER TABLE public.users
+ALTER COLUMN id
+SET DEFAULT nextval('users_id_seq');
+ALTER SEQUENCE users_id_seq OWNED BY public.users.id;
+
+INSERT INTO public.users(name)
+VALUES('johnadams');
+SELECT * FROM public.users;
+
+SQL: CREATE INDEX and advanced information about indexes
+
+SELECT * FROM public.users WHERE name="rolfsmith";
+
+CREATE INDEX user_name_index ON public.users(name);
+CREATE UNIQUE INDEX index_name ON table(column)
+
+SELECT * FROM public.movies WHERE id=1 AND user_id=2;
+
+CREATE INDEX index_name ON public.movies(id, user_id)
+
+REINDEX INDEX users_name_index;
+
+
+SQL: DROP TABLE for deleting tables and data
+DROP TABLE public.users;
+DROP TABLE public.users CASCADE;
+SELECT * FROM public.videos;
+DROP TABLE public.videos;
+DROP TABLE IF EXISTS publics.videos;
+
+
+
+############################################################
+#############################################################
+
+SQL: Views and what they are used for.
+
+SELECT * FROM customers INNER JOIN
+purchases ON customers.id = purchases.customer_id;
+
+SELECT * FROM customers 
+INNER JOIN purchases ON customers.id = purchases.customer_id
+INNER JOIN items ON purchases.item_id = items.id;
+
+SELECT customers.first_name, customers.last_name, SUM(items.price) FROM customers 
+INNER JOIN purchases ON customers.id = purchases.customer_id
+INNER JOIN items ON purchases.item_id = items.id
+GROUP BY customers.id;
+
+CREATE VIEW total_revenue_per_customer AS
+SELECT customers.first_name, customers.last_name, SUM(items.price) FROM customers 
+INNER JOIN purchases ON customers.id = purchases.customer_id
+INNER JOIN items ON purchases.item_id = items.id
+GROUP BY customers.id;
+
+
+SELECT * FROM total_revenue_per_customer;
+
+
+CREATE VIEW total_revenue_per_customer AS
+SELECT customers.first_name, customers.last_name, SUM(items.price) FROM customers 
+INNER JOIN purchases ON customers.id = purchases.customer_id
+INNER JOIN items ON purchases.item_id = items.id
+GROUP BY customers.id;
+
+SELECT * FROM purchases;
+
+INSERT INTO purchases
+VALUES (11, 6, 5);
+
+SELECT * FROM total_revenue_per_customer;
+
+SELECT * FROM total_revenue_per_customer WHERE sum > 150;
+
+CREATE VIEW awesome_customers AS
+SELECT * FROM total_revenue_per_customer WHERE sum > 150;
+
+SELECT * FROM awesome_customers;
+
+SELECT * FROM awesome_customers ORDER BY sum DESC;
+
+CREATE VIEW expensive_items AS
+SELECT * FROM items WHERE price > 100;
+
+SELECT * FROM expensive_items;
+
+INSERT INTO expensive_items(id, name, price)
+VALUES (9, 'DSLR',400.00);
+
+SELECT * FROM expensive_items;
+
+INSERT INTO expensive_items(id, name, price)
+VALUES (11, 'Pencil',2.00);
+
+DROP VIEW expensive_items;
+
+CREATE VIEW expensive_items AS
+SELECT * FROM items WHERE price > 100;
+
+DROP VIEW expensive_items;
+
+CREATE VIEW expensive_items AS
+SELECT * FROM items WHERE price >= 100
+WITH LOCAL CHECK OPTION;
+
+INSERT INTO expensive_items(id, name, price)
+VALUES (12, 'Pencil',100.00);
+
+DROP VIEW expensive_items;
+
+CREATE VIEW non_luxury_items AS
+SELECT * FROM expensive_items WHERE price < 10000
+WITH LOCAL CHECK OPTION;
+
+INSERT INTO non_luxury_items(id, name, price)
+VALUES (12, 'Pencil',2.00);
+
+CREATE VIEW non_luxury_items AS
+SELECT * FROM items WHERE price < 10000
+WITH CASCADED CHECK OPTION;
+
+INSERT INTO non_luxury_items(id, name, price)
+VALUES (13, 'Pencil',100.00);
+
+
+#############################
+SQL: built in functions and the HAVING construct
+
+
+SELECT customers.first_name, customers.last_name, COUNT(purchases.id) AS purchase_count
+FROM customers
+INNER JOIN purchases ON customers.id = purchases.customer_id
+GROUP BY customers.id;
+
+SELECT AVG(items.price) FROM items;
+
+SELECT AVG(items.price) FROM items
+INNER JOIN purchases ON items.id = purchases.item_id;
+
+SELECT * FROM items
+INNER JOIN purchases ON items.id = purchases.item_id;
+
+
+SELECT * FROM items;
+
+SELECT items.name, items.price FROM items
+INNER JOIN purchases ON items.id = purchases.item_id;
+
+SELECT items.name, items.price FROM items
+INNER JOIN purchases ON items.id = purchases.item_id;
+ORDER BY items.price;
+
+SELECT items.name, items.price FROM items
+INNER JOIN purchases ON items.id = purchases.item_id;
+ORDER BY items.price DESC;
+
+SELECT items.name, items.price FROM items
+INNER JOIN purchases ON items.id = purchases.item_id;
+ORDER BY items.price DESC
+LIMIT 1;
+
+SELECT MAX(items.price) FROM items
+INNER JOIN purchases ON items.id = purchases.item_id;
+
+SELECT customers.first_name, customers.last_name, COUNT(purchases.id) AS purchase_count
+FROM customers
+INNER JOIN purchases ON customers.id = purchases.customer_id
+GROUP BY customers.id;
+
+
+SELECT customers.first_name, customers.last_name, COUNT(purchases.id) AS purchase_count
+FROM customers
+INNER JOIN purchases ON customers.id = purchases.customer_id
+GROUP BY customers.id
+HAVING COUNT(purchases.id) > 3;
+
+
+#############################
+DATES in SQL: an old problem
+
+SELECT timestamp '2005-10-08 05:16:45'
+SELECT NOW();
+SELECT TO_CHAR(NOW(), 'DD-MM-YYYY');
+SELECT TO_CHAR(NOW(), 'DD-MM-YYYY HH:MI:SS');
+SELECT TO_CHAR(NOW(), 'Day,DD-MM-YYYY HH:MI:SS');
+SELECT TO_CHAR(NOW(), 'FMDay,DD-MM-YYYY HH:MI:SS');
+SELECT TO_CHAR(NOW(), 'FMDay DDth, FMMonth,DD-MM-YYYY HH:MI:SS');
+SELECT TO_TIMESTAMP('Monday 22nd, May,22-05-2017 09:32:01', 'FMDay DDth, FMMonth,DD-MM-YYYY HH:MI:SS');
+SELECT TO_TIMESTAMP('2015-10-10 01:02:03', 'YYYY-MM-DD HH:MI:SS');
+
+
+Other data types in SQL(including JSON in Postgresql)
+########################################################
+CREATE TYPE mood AS ENUM('extremely unhappy','unhappy','ok','happy','extremely happy')
+
+CREATE TABLE students(
+name character varying(255),
+current_mood mood
+);
+
+SELECT * FROM students;
+
+INSERT INTO students VALUES ('Moe', 'happy');
+INSERT INTO students VALUES ('William', 'happy');
+
+SELECT * FROM students;
+
+"Moe";"happy"
+"Mark";"extremely happy"
+"Viki";"extremely happy"
+"William";"happy"
+
+SELECT * FROM students WHERE current_mood > 'ok'
+
+Nested SELECT statement for complex
+#######################################
+SELECT * FROM items WHERE price >
+(SELECT AVG(items.price) FROM items);
+
+
+Microsoft Windows [Version 6.3.9600]
+(c) 2013 Microsoft Corporation. All rights reserved.
+
+C:\Users\Keith>cd C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\appli
+cations
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications>dir
+ Volume in drive C has no label.
+ Volume Serial Number is 4C7C-4F9E
+
+ Directory of C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applicati
+ons
+
+05/28/2017  02:11 AM    <DIR>          .
+05/28/2017  02:11 AM    <DIR>          ..
+03/21/2017  11:09 PM    <DIR>          calculator
+05/28/2017  02:39 AM    <DIR>          completepythonandpostgresql
+03/15/2017  08:53 PM    <DIR>          files
+03/31/2017  08:57 PM    <DIR>          flaskwebsite
+04/08/2017  01:46 AM    <DIR>          gui
+03/11/2017  03:28 PM    <DIR>          jtest
+03/11/2017  03:27 PM    <DIR>          megacourse
+03/02/2017  08:08 PM                82 nowd.py
+03/10/2017  09:15 PM    <DIR>          sentdex
+03/05/2017  08:28 PM                65 string1.py
+03/15/2017  08:53 PM    <DIR>          tetris
+03/02/2017  10:30 PM               172 timer.py
+05/18/2017  12:01 AM    <DIR>          udacity
+03/21/2017  07:30 PM    <DIR>          webmap
+03/29/2017  08:43 PM    <DIR>          websiteblocker
+03/21/2017  07:30 PM    <DIR>          __pycache__
+               3 File(s)            319 bytes
+              15 Dir(s)  16,558,243,840 bytes free
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications>venv\Scrip
+ts\activate.bat
+The system cannot find the path specified.
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications>.\venv\Scr
+ipts\activate.bat
+The system cannot find the path specified.
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications>.\venv\Scr
+ipts\activate.bat
+The system cannot find the path specified.
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications>.\venv\Scr
+ipts\activate.bat
+The system cannot find the path specified.
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications>cd C:\User
+s\Keith\AppData\Local\Programs\Python\Python36-32\applications
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications>cd C:\User
+s\Keith\AppData\Local\Programs\Python\Python36-32\applications\completepythonand
+postgresql
+
+C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications\completepy
+thonandpostgresql>.\venv\Scripts\activate.bat
+(venv) C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications\com
+pletepythonandpostgresql>python -m easy_install \C:\Users\Keith\Downloads\psycop
+g2-2.6.2.win32-py3.6-pg9.6.1-release.exe
+error: Not a URL, existing file, or requirement spec: '\\C:\\Users\\Keith\\Downl
+oads\\psycopg2-2.6.2.win32-py3.6-pg9.6.1-release.exe'
+
+(venv) C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications\com
+pletepythonandpostgresql>
+(venv) C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications\com
+pletepythonandpostgresql>
+(venv) C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications\com
+pletepythonandpostgresql>python -m easy_install C:\Users\Keith\Downloads\psycopg
+2-2.6.2.win32-py3.6-pg9.6.1-release.exe
+Processing psycopg2-2.6.2.win32-py3.6-pg9.6.1-release.exe
+psycopg2.tests.__pycache__.test_module.cpython-36: module references __file__
+psycopg2.tests.__pycache__.test_types_basic.cpython-36: module references __file
+__
+psycopg2.__pycache__._psycopg.cp36-win32.cpython-36: module references __file__
+creating 'C:\Users\Keith\AppData\Local\Temp\easy_install-yfbvu87s\psycopg2-2.6.2
+-py3.6-win32.egg' and adding 'C:\Users\Keith\AppData\Local\Temp\easy_install-yfb
+vu87s\psycopg2-2.6.2-py3.6-win32.egg.tmp' to it
+removing 'c:\users\keith\appdata\local\programs\python\python36-32\lib\site-pack
+ages\psycopg2-2.6.2-py3.6-win32.egg' (and everything under it)
+creating c:\users\keith\appdata\local\programs\python\python36-32\lib\site-packa
+ges\psycopg2-2.6.2-py3.6-win32.egg
+Extracting psycopg2-2.6.2-py3.6-win32.egg to c:\users\keith\appdata\local\progra
+ms\python\python36-32\lib\site-packages
+psycopg2 2.6.2 is already the active version in easy-install.pth
+
+Installed c:\users\keith\appdata\local\programs\python\python36-32\lib\site-pack
+ages\psycopg2-2.6.2-py3.6-win32.egg
+Processing dependencies for psycopg2==2.6.2
+Finished processing dependencies for psycopg2==2.6.2
+
+(venv) C:\Users\Keith\AppData\Local\Programs\Python\Python36-32\applications\com
+pletepythonandpostgresql>python -m easy_install C:\Users\Keith\Downloads\psycopg
+2-2.6.2.win32-py3.6-pg9.6.1-release.exe
+
+
+\\
+http://www.gratisography.com/
+https://magdeleine.co/license/cc0/
+https://www.splitshire.com/
+https://picjumbo.com/
+https://picography.co/
+http://www.splashbase.co/
+https://pixabay.com/
+
