@@ -1,0 +1,55 @@
+Microsoft Windows [Version 10.0.14393]
+(c) 2016 Microsoft Corporation. All rights reserved.
+
+C:\Users\Ele_teacher1>cd C:\Users\Ele_teacher1\AppData\Local\Programs\Python\Python36-32\apps\webmap
+
+C:\Users\Ele_teacher1\AppData\Local\Programs\Python\Python36-32\apps\webmap>pip install folium
+Collecting folium
+  Downloading folium-0.3.0-py3-none-any.whl (71kB)
+    100% |████████████████████████████████| 71kB 695kB/s
+Collecting branca (from folium)
+  Downloading branca-0.2.0-py3-none-any.whl
+Requirement already satisfied: six in c:\users\ele_teacher1\appdata\local\programs\python\python36-32\lib\site-packages (from folium)
+Requirement already satisfied: Jinja2 in c:\users\ele_teacher1\appdata\local\programs\python\python36-32\lib\site-packages (from folium)
+Requirement already satisfied: MarkupSafe>=0.23 in c:\users\ele_teacher1\appdata\local\programs\python\python36-32\lib\site-packages (from Jinja2->folium)
+Installing collected packages: branca, folium
+Successfully installed branca-0.2.0 folium-0.3.0
+
+C:\Users\Ele_teacher1\AppData\Local\Programs\Python\Python36-32\apps\webmap>pip install jinja2
+Requirement already satisfied: jinja2 in c:\users\ele_teacher1\appdata\local\programs\python\python36-32\lib\site-packages
+Requirement already satisfied: MarkupSafe>=0.23 in c:\users\ele_teacher1\appdata\local\programs\python\python36-32\lib\site-packages (from jinja2)
+
+C:\Users\Ele_teacher1\AppData\Local\Programs\Python\Python36-32\apps\webmap>python
+Python 3.6.0 (v3.6.0:41df79263a11, Dec 23 2016, 07:18:10) [MSC v.1900 32 bit (Intel)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import folium
+>>>
+>>> dir(folium)
+['CircleMarker', 'ClickForMarker', 'ColorMap', 'CssLink', 'CustomIcon', 'Div', 'DivIcon', 'Element', 'FeatureGroup', 'Figure', 'FitBounds', 'GeoJson', 'Html', 'IFrame', 'Icon', 'JavascriptLink', 'LatLngPopup', 'LayerControl', 'LinearColormap', 'Link', 'MacroElement', 'Map', 'Marker', 'MarkerCluster', 'PolyLine', 'Popup', 'RegularPolygonMarker', 'StepColormap', 'TileLayer', 'TopoJson', 'Vega', 'WmsTileLayer', '__all__', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', '__version__', 'absolute_import', 'features', 'folium', 'map']
+>>> map=folium.Map(location=[45.372,-121.697],zoom_start=12)
+>>> map
+<folium.folium.Map object at 0x036856F0>
+>>> dir(folium.map)
+['CssLink', 'ENV', 'Element', 'Environment', 'FeatureGroup', 'Figure', 'FitBounds', 'GlobalSwitches', 'Html', 'Icon', 'JavascriptLink', 'Layer', 'LayerControl', 'LegacyMap', 'MacroElement', 'Marker', 'OrderedDict', 'PackageLoader', 'Popup', 'Template', 'TileLayer', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', '_default_css', '_default_js', '_parse_size', 'binary_type', 'json', 'text_type', 'unicode_literals']
+>>> map.create_map(path='test.html')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Map' object has no attribute 'create_map'
+>>> map.create_map(path='test.html')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Map' object has no attribute 'create_map'
+>>> map.save('test.html')
+>>> map.folium.Map(location=[45.372, -121.697],zoom_start=10,tiles='Stamen Terrain')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Map' object has no attribute 'folium'
+>>>  map=folium.Map(location=[45.372, -121.697],zoom_start=10,tiles='Stamen Terrain')
+  File "<stdin>", line 1
+    map=folium.Map(location=[45.372, -121.697],zoom_start=10,tiles='Stamen Terrain')
+    ^
+IndentationError: unexpected indent
+>>> map=folium.Map(location=[45.372, -121.697],zoom_start=10,tiles='Stamen Terrain')
+>>> map
+<folium.folium.Map object at 0x04EC4F90>
+>>>
