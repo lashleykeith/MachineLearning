@@ -7,4 +7,4 @@ The repositories: .
 - [FastAI](https://github.com/lashleykeith/MachineLearning/tree/main/FastAI_course22)
 - [OpenCV](https://github.com/lashleykeith/MachineLearning/tree/main/Master_OpenCV)
 - [Python](https://github.com/lashleykeith/MachineLearning/tree/main/Python)
--- [Python](https://github.com/lashleykeith/MachineLearning/tree/main/Python) 
+   1. [Python](https://github.com/lashleykeith/MachineLearning/tree/main/Python) 
