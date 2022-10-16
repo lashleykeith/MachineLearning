@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+    <title>User profile</title>
+</head>
+
+<body>
+<!--{{ user.screen_name }}-->
+<br>
+<br>
+<form action="{{ url_for('search') }}">
+    <label for="q">Enter Search</label><br><br>
+    <input type="text" name="q" id="q" placeholder="Your twitter search">
+    <button type="submit">Search</button>
+</form>
+<br>
+<img src="https://aniketmehta.files.wordpress.com/2013/02/opinions-of-people-2.jpeg"  alt="thumbs" class="center-block img-responsive" style="width: 500px; height:500px;"/>
+
+</body>
+</html>
