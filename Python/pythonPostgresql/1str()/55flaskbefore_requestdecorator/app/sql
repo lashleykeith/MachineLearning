@@ -1,0 +1,34 @@
+36loadingfromthedatabasefrompython
+SELECT * FROM users;
+DELETE FROM users WHERE id != 1;
+SELECT * FROM users;
+
+37removingsomeduplicate
+SELECT * FROM users;
+
+38connectionpoolingclass
+SELECT * FROM users;
+47reusingCodetoSaveUsers
+DROP TABLE users;
+48creatingusers
+CREATE TABLE users
+(
+	id SERIAL PRIMARY KEY,
+	email text,
+	first_name text,
+	last_name text,
+	oauth_token text,
+	oauth_token_secret text
+)
+
+SELECT * FROM users;
+
+53addingtwitterauthorization - ERROR HERE MUST GO BACK
+DROP TABLE users;
+CREATE TABLE users
+(
+	id SERIAL PRIMARY KEY,
+	screen_name text,
+	oauth_token text,
+	oauth_token_secret text
+)
