@@ -1,0 +1,5 @@
+Changes
+
+You must change staticfiles to static in the base
+
+https://stackoverflow.com/questions/55929472/django-templatesyntaxerror-staticfiles-is-not-a-registered-tag-library
